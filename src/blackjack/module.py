@@ -3,7 +3,7 @@ import random
 # Global variable to keep track of the number of shots taken
 global shots_taken
 
-def start_game(bet amount):
+def start_game(bet_amount):
     return
 def get_commentary(action):
     hit_normal = [
@@ -72,30 +72,34 @@ def get_advice(advice_type):
 def calculate_hand_value(cards in hand):
     return
 
+
+def take_shots_reset():
+    global shots_taken
+    shots_taken = 0
+    return "You are sober again!"
+
 def take_shots(number_of_shots):
 
-    # Check if the input is valid
-    if type(number_of_shots) != int:
-        print("Please enter a valid number of shots!")
-    elif number_of_shots < 0:
-        print("You can't take negative shots!")
-
-    # Print the number of shots taken and increment the total number of shots taken
-    print("You took {number_of_shots} shots!")
-    shots_taken += number_of_shots
-
-    # Print a message based on the number of shots taken
-    if shots_taken <= 1:
-        print("You feel great!")
-    elif shots_taken <= 3:
-        print("You feel tipsy!")
-    elif shots_taken <= 5:
-        print("You feel drunk!")
-    elif shots_taken <= 7:
-        print("Get me some car keys and let's go for a drive!")
-    elif shots_taken <= 9:
-        print("I am invincible!")
-    elif shots_taken >= 10:
-        print("You are wasted! Go home!")
-        shots_taken = 0
-    return
+    # Validates the input
+     if type(number_of_shots) != int:
+        return "Please enter a valid number of shots!"
+     elif number_of_shots < 0:
+        return "You can't take negative shots!"
+     else:
+        # Increments the global variable shots_taken by the number of shots taken
+        # Print a message based on the total number of shots taken
+        shots_taken += number_of_shots
+        if shots_taken <= 1:
+            return "You feel great!"
+        elif shots_taken <= 3:
+            return "You feel tipsy!"
+        elif shots_taken <= 5:
+            return "You feel drunk!"
+        elif shots_taken <= 7:
+            return "Get me some car keys and let's go for a drive!"
+        elif shots_taken <= 9:
+            return "I am invincible!"
+        elif shots_taken >= 10:
+            take_shots_reset()
+            return "You are wasted! Go home!"
+        return
