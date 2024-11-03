@@ -1,4 +1,8 @@
 import random
+
+ # Declare the global variable shots_taken
+global shots_taken
+
 def start_game(bet amount):
     return
 def get_commentary(action):
@@ -26,3 +30,34 @@ def get_advice(advice_type):
         return "I can only give 'good' or 'bad' advice!"
 def calculate_hand_value(cards in hand):
     return
+# Takes a number of shots and prints a message based on the number of total shots taken
+def take_shots(number_of_shots):
+
+    # Check if the input is valid
+    if type(number_of_shots) != int:
+        print("Please enter a valid number of shots!")
+    elif number_of_shots < 0:
+        print("You can't take negative shots!")
+
+    # Print the number of shots taken and increment the total number of shots taken
+    print("You took {number_of_shots} shots!")
+    shots_taken += number_of_shots
+
+    # Print a message based on the number of shots taken
+    if shots_taken <= 1:
+        print("You feel great!")
+    elif shots_taken <= 3:
+        print("You feel tipsy!")
+    elif shots_taken <= 5:
+        print("You feel drunk!")
+    elif shots_taken <= 7:
+        print("Get me some car keys and let's go for a drive!")
+    elif shots_taken <= 9:
+        print("I am invincible!")
+    elif shots_taken >= 10:
+        print("You are wasted! Go home!")
+        shots_taken = 0
+    return
+
+        
+        
