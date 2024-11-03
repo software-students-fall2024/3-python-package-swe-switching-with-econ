@@ -1,9 +1,179 @@
 import random
+import time
 
 # Global variable to keep track of the number of shots taken
 global shots_taken
 
+# draws a random card from the available deck pool
+def draw_card(deck, deckSize):
+    random_num = random.randint(1, deckSize)
+    counter = 0
+    for i in range (0, 13):
+        if (counter + deck[i] >= random_num):
+            return i + 1
+        else:
+            counter += deck[i]
+
+# display all cards held
+def print_cards(who, hand):
+    print(who + " cards:", end=" ")
+    for i in range (0, len(hand)):
+         match hand[i]:
+            case 11:
+                print("|J|", end=" ")
+            case 12:
+                print("|Q|", end=" ")
+            case 13:
+                print("|K|", end=" ")
+            case 1:
+                print("|A|", end=" ")
+            case _:
+                print("|" + str(hand[i]) + "|", end=" ")
+    print()    
+
+# sums all cards in the specified hand
+def sum_cards(hand):
+    sums = [0]
+    for i in range(0, len(hand)):
+        match hand[i]:
+            case 11 | 12 | 13:
+                for j in range(0, len(sums)):
+                    sums[j] += 10
+            case 1:
+                sums_length = len(sums)
+                for j in range(0, sums_length):
+                    sums.append(sums[j] + 1)
+                    sums[j] += 11
+            case _:
+                for j in range(0, len(sums)):
+                    sums[j] += hand[i]
+    # if any sum > 21, remove it
+    # if any sum = 21, BLACKJACK!
+    valid_sums = [element for element in sums if element <= 21]
+    if 21 in valid_sums:
+        return [21]
+
+    return valid_sums
+
 def start_game(bet_amount):
+    deck = [4,4,4,4,4,4,4,4,4,4,4,4,4]
+    deckSize = 52
+    print("Your are betting $" + str(bet_amount))
+
+    # draws 2 cards for the player
+    player_cards = []
+    for i in range (0, 2):
+        drawn_card = draw_card(deck, deckSize)
+        deck[drawn_card - 1] -= 1
+        deckSize -= 1
+        player_cards.append(drawn_card)
+
+    # draws 2 cards for the dealer
+    dealer_cards = []
+    for i in range (0, 2):
+        drawn_card = draw_card(deck, deckSize)
+        deck[drawn_card - 1] -= 1
+        deckSize -= 1
+        dealer_cards.append(drawn_card)
+
+    # check if anyone has blackjack
+    player_sum = sum_cards(player_cards)
+    dealer_sum = sum_cards(dealer_cards)
+    if (player_sum[0] == 21 and dealer_sum == 21):
+        print_cards("Dealer", dealer_cards)
+        print_cards("Player", player_cards)
+        print("It's a tie! You will recieve your bet back")
+        return 0
+    elif (dealer_sum[0] == 21):
+        print_cards("Dealer", dealer_cards)
+        print_cards("Player", player_cards)
+        print("Unlucky :(, you lost $" + str(bet_amount) + "!")
+        return bet_amount * -1
+    elif (player_sum[0] == 21):
+        print_cards("Dealer", dealer_cards)
+        print_cards("Player", player_cards)
+        print("NICE, you just won $" + str(bet_amount) + "!")
+        return bet_amount
+        
+    while (True):
+        hidden_card = dealer_cards[0]
+        dealer_cards[0] = '?'
+        print_cards("Dealer", dealer_cards)
+        print_cards("Player", player_cards)
+        dealer_cards[0] = hidden_card
+        print()
+
+        decision = input("Please type \"stand\" or \"hit\"\n")
+
+        if (decision == "stand"):
+            print("You chose to STAND")
+            print()
+            player_sum = sum_cards(player_cards)
+            greatest_player_sum = 0
+            for i in range (0, len(player_sum)):
+                if (player_sum[i] > greatest_player_sum):
+                    greatest_player_sum = player_sum[i]
+            
+            dealer_sum = sum_cards(dealer_cards)
+            greatest_dealer_sum = 0
+            for i in range (0, len(dealer_sum)):
+                if (dealer_sum[i] > greatest_dealer_sum):
+                    greatest_dealer_sum = dealer_sum[i]
+
+            print_cards("Dealer", dealer_cards)
+            print_cards("Player", player_cards)
+            print()
+
+            while (dealer_sum != [] and greatest_dealer_sum < 17):
+                
+                time.sleep(1.2)
+                drawn_card = draw_card(deck, deckSize)
+                deck[drawn_card - 1] -= 1
+                deckSize -= 1
+                dealer_cards.append(drawn_card)
+                dealer_sum = sum_cards(dealer_cards)
+                print_cards("Dealer", dealer_cards)
+                print_cards("Player", player_cards)
+                print()
+                for i in range (0, len(dealer_sum)):
+                    if (dealer_sum[i] > greatest_dealer_sum):
+                        greatest_dealer_sum = dealer_sum[i]
+                print("Current greatest dealer sum =", greatest_dealer_sum)
+
+            if (dealer_sum == []):
+                print("Dealer busted!, you win $" + str(bet_amount) + "!")
+                return bet_amount
+            elif (greatest_dealer_sum == greatest_player_sum):
+                print("It's a tie! You will recieve your bet back")
+                return 0
+            elif (greatest_dealer_sum > greatest_player_sum):
+                print("Unlucky :(, you lost $" + str(bet_amount) + "!")
+                return bet_amount * -1
+            else:
+                print("NICE, you just won $" + str(bet_amount) + "!")
+                return bet_amount
+
+        elif(decision == "hit"):
+            print("You chose to HIT")
+            print()
+            drawn_card = draw_card(deck, deckSize)
+            deck[drawn_card - 1] -= 1
+            deckSize -= 1
+            player_cards.append(drawn_card)
+            player_sum = sum_cards(player_cards)
+            if (len(player_sum) == 0):
+                print_cards("Dealer", dealer_cards)
+                print_cards("Player", player_cards)
+                print("You busted! RIP $" + str(bet_amount) + "!")
+                return bet_amount * -1
+            if (player_sum == [21]):
+                print_cards("Dealer", dealer_cards)
+                print_cards("Player", player_cards)
+                print("NICE, you just won $" + str(bet_amount) + "!")
+                return bet_amount
+        else:
+            print("You did not type the input correctly!")
+
     return
 
 def get_commentary(action):
