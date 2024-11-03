@@ -6,7 +6,48 @@ global shots_taken
 def start_game(bet amount):
     return
 def get_commentary(action):
-    return
+    hit_normal = [
+        "Taking a chance, I see!",
+        "Not satisfied yet?",
+        "Feeling lucky?", 
+        "Brace yourself for another card!",
+    ]
+    stand_normal = [
+        "Playing it safe, I like it.",
+        "Happy with what you have?", 
+        "A wise choice, perhaps?", 
+        "Let's see what the dealer has...",
+    ]
+    hit_drunk = [
+        "This is DEFINITELY a good idea!",
+        "There's no way this can backfire!",
+        "You NEED another card! And maybe another drink!",
+    ]
+    stand_drunk = [
+        "But what if you got another card anyway...?",
+        "Aww, but what if your total could be higher?",
+        "You're SO confident that you'll win with this hand!"
+    ]
+    bust = [
+        "Ouch! That's a bust!", 
+        "Over 21, better luck next time.", 
+        "You flew too close to the sun.",
+        "Unlucky! The dealer takes it!"
+    ]
+    if action.lower() == 'hit':
+        if shots_taken < 5:
+            return random.choice(hit_normal)
+        else:
+            return random.choice(hit_drunk)
+    elif action.lower() == 'stand':
+        if shots_taken < 5:
+            return random.choice(stand_normal)
+        else:
+            return random.choice(stand_drunk)
+    elif action.lower() == 'bust':
+        return random.choice(bust)
+    else:
+        return "I can commentate on 'hit', 'stand', or 'bust' actions."
 def get_advice(advice_type):
     good_advice = [
         "Remember to take a break!",
