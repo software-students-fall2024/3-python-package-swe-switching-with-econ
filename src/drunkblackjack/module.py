@@ -5,6 +5,7 @@ global shots_taken
 
 def start_game(bet_amount):
     return
+
 def get_commentary(action):
     hit_normal = [
         "Taking a chance, I see!",
@@ -48,12 +49,13 @@ def get_commentary(action):
         return random.choice(bust)
     else:
         return "I can only commentate on 'hit', 'stand', or 'bust' actions."
+    
 def get_advice(advice_type):
     good_advice = [
         "Remember to take a break!",
         "Stopping after losing is the smarter option",
         "Drink water and stay hydrated!",
-        "If you’re not having fun, it’s time to step away.",
+        "If you’re not having fun, it’s time to step away",
     ]
     
     bad_advice = [
@@ -69,9 +71,9 @@ def get_advice(advice_type):
         return random.choice(bad_advice)
     else:
         return "I can only give 'good' or 'bad' advice!"
+    
 def calculate_hand_value(cards_in_hand):
     return
-
 
 def take_shots_reset():
     global shots_taken
