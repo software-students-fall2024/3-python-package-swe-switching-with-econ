@@ -19,6 +19,8 @@ jobs:
         uses: kojoru/prepare-pipenv@v1
         with:
           python-version: ${{ matrix.python-version }}
+          token: ${{ secrets.TEST_PYPI_API_TOKEN }}
+
       - name: Turn on 'editable' mode
         run: |
           pipenv install -e .
