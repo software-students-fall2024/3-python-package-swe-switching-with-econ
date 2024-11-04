@@ -2,7 +2,7 @@ import random
 import time
 
 # Global variable to keep track of the number of shots taken
-global shots_taken
+shots_taken = 0
 
 # draws a random card from the available deck pool
 def draw_card(deck, deckSize):
@@ -103,7 +103,19 @@ def start_game(bet_amount):
         dealer_cards[0] = hidden_card
         print()
 
-        decision = input("Please type \"stand\" or \"hit\"\n")
+        player_sum = sum_cards(player_cards)
+        greatest_player_sum = 0
+        for i in range (0, len(player_sum)):
+            if (player_sum[i] > greatest_player_sum):
+                greatest_player_sum = player_sum[i]
+        
+        decision = "hit"
+        global shots_taken
+        if (shots_taken >= 5 and greatest_player_sum < 17):
+            print("You're too drunk, yolo bolo let's HIT!")
+            time.sleep(1.2)
+        else:
+            decision = input("Please type \"stand\" or \"hit\"\n")
 
         if (decision == "stand"):
             print("You chose to STAND")
