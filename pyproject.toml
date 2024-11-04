@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "drunkblackjack"
-description = "A python package for playing blackjack, with options to get blackjack commentary, advice, and to get 'drunk' and see how it affects your play!"
+description = "A python package for playing blackjack, with the option to get 'drunk' and see how it affects your play!"
 version = "0.1.0"
 authors = [
   { name="SWE", email="ll4725@nyu.edu" },

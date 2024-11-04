@@ -58,7 +58,7 @@ def sum_cards(hand):
 def start_game(bet_amount):
     deck = [4,4,4,4,4,4,4,4,4,4,4,4,4]
     deckSize = 52
-    print("Your are betting $" + str(bet_amount))
+    print("You are betting $" + str(bet_amount))
 
     # draws 2 cards for the player
     player_cards = []
@@ -257,9 +257,6 @@ def get_advice(advice_type):
         return random.choice(bad_advice)
     else:
         return "I can only give 'good' or 'bad' advice!"
-    
-def calculate_hand_value(cards_in_hand):
-    return
 
 def take_shots_reset():
     global shots_taken
