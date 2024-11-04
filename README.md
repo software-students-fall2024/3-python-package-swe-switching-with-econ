@@ -7,11 +7,10 @@
 A lighthearted blackjack python package that gives you the option to get "drunk" and see how it affects your play, as well as get commentary on your actions and get good or bad advice on gambling. Warning: don't drink like this in real life!
 
 ## PyPI Link
+[Drunk Blackjack](https://pypi.org/project/drunkblackjack/1.0.1/)
 
 ## How to Play Blackjack
 The goal of blackjack is to beat the dealer by getting a card total as close to 21 as possible without going over. You can "hit" to get another card or "stand" to keep your current cards as is. Whoever is closest to 21 wins, but if you get over 21, you bust and lose. 
-
-## Installation
 
 ## Usage
 ### Import the package
@@ -88,7 +87,26 @@ python -m build
 pytest
 ```
 
-## Configuring and Running
+## Installing and Running the Package
+1. Install and activate `pipenv`
+```bash
+pip install pipenv
+pipenv shell
+```
+2. Install the package using `pip`
+```
+pip install drunkblackjack==1.0.1
+```
+3. Create a Python program file that imports and uses the package according to the usage instructions above, or use our example program `example_program.py`
+4. Run the program:
+```
+python3 example_program.py
+```
+Or
+```
+python example_program.py
+```
+
 
 ## Team
 
