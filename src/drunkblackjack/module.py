@@ -151,7 +151,6 @@ def start_game(bet_amount):
                 for i in range (0, len(dealer_sum)):
                     if (dealer_sum[i] > greatest_dealer_sum):
                         greatest_dealer_sum = dealer_sum[i]
-                print("Current greatest dealer sum =", greatest_dealer_sum)
 
             if (dealer_sum == []):
                 print("Dealer busted!, you win $" + str(bet_amount) + "!")
