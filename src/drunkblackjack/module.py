@@ -206,19 +206,19 @@ def get_commentary(action):
         "Unlucky! The dealer takes it!"
     ]
     if action.lower() == 'hit':
-        if shots_taken < 5:
+        if shots_taken < 4:
             return random.choice(hit_normal)
         else:
             return random.choice(hit_drunk)
     elif action.lower() == 'stand':
-        if shots_taken < 5:
+        if shots_taken < 4:
             return random.choice(stand_normal)
         else:
             return random.choice(stand_drunk)
     elif action.lower() == 'bust':
         return random.choice(bust)
     else:
-        return "I can commentate on 'hit', 'stand', or 'bust' actions."
+        return "I can only commentate on 'hit', 'stand', or 'bust' actions."
     
 def get_advice(advice_type):
     good_advice = [
@@ -242,7 +242,7 @@ def get_advice(advice_type):
     else:
         return "I can only give 'good' or 'bad' advice!"
     
-def calculate_hand_value(cards in hand):
+def calculate_hand_value(cards_in_hand):
     return
 
 def take_shots_reset():
@@ -260,6 +260,7 @@ def take_shots(number_of_shots):
      else:
         # Increments the global variable shots_taken by the number of shots taken
         # Print a message based on the total number of shots taken
+        global shots_taken
         shots_taken += number_of_shots
         if shots_taken <= 1:
             return "You feel great!"
