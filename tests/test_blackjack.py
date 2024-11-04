@@ -19,47 +19,46 @@ class Tests:
             cards_drawn.append(drawn_card)
         assert cards_drawn == [7, 13, 7, 1]
 
-    # player starts with 5, 9, if you hit twice, you will draw a 6 then 9 and bust, losing 1000
+    # player starts with 5, 9, if you hit, you will draw a 9 and bust, losing 1000
     def test_blackjack_player_bust(self, monkeypatch):
         monkeypatch.setattr('builtins.input', lambda _: "hit")
         result = module.start_game(1000)
         assert result == -1000
-
-    # player has 6, 10, dealer has 4, 9
-    # if player stands, dealers draws a 3, is forced to hit, then draws a 6
-    # which busts the dealer
+        
+    # player has 10, 4, dealer has 9, 3
+    # if player stands, dealers draws a 3, is forced to hit, then draws a 2
+    # which beats your 14
     def test_blackjack_dealer_bust(self, monkeypatch):
         monkeypatch.setattr('builtins.input', lambda _: "stand")
         result = module.start_game(1000)
-        assert result == 1000
+        assert result == -1000
     
-    # player has 3, K, dealer has 2, J
-    # if player hits, he will receive a 5, then stands
-    # dealer has 12, is forced to hit and recieves a 10
-    # dealer busts and player will win
-    def test_blackjack_hit_then_stand(self, monkeypatch):
+    # player has 10, 5, dealer has 9, K
+    # if player hits, he will receive a 6, blackjack
+    def test_blackjack_player_blackjack(self, monkeypatch):
         inputs = iter(["hit", "stand"])
         monkeypatch.setattr('builtins.input', lambda _: next(inputs))
         result = module.start_game(1000)
         assert result == 1000
 
     # if shots_taken less than 5, play responsibly!
-    # player has Q, 10
-    # dealer has 3, 6
-    # player stands, dealer draws 2 then K hitting a blackjack, rip
+    # player has 2, Q
+    # dealer has 2, Q
+    # player stands, dealer draws 9 hitting a blackjack, rip
     def test_blackjack_not_drunk(self, monkeypatch):
         monkeypatch.setattr('builtins.input', lambda _: "stand")
         result = module.start_game(1000)
         assert result == -1000
 
-    # you have taken at least 5 shots
+    # you have taken at least 5 shot
+    # player has 9, 2 dealer has 6, 8
     # starting to play like a bot, if sum < 17, forced to hit
-    # player will draw a 2, Q, then 10 and bust
+    # player will draw a J blackjack!
     def test_blackjack_drunk(self, monkeypatch):
         module.take_shots(5)
         monkeypatch.setattr('builtins.input', lambda _: "stand")
         result = module.start_game(1000)
-        assert result == -1000
+        assert result == 1000
 
     # should return an array with both as ace 1 and 11
     def test_sum_cards_with_1_ace(self):
