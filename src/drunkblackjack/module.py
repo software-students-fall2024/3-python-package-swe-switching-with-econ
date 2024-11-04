@@ -118,8 +118,10 @@ def start_game(bet_amount):
             decision = input("Please type \"stand\" or \"hit\"\n")
 
         if (decision == "stand"):
+            print(get_commentary('stand'))
             print("You chose to STAND")
             print()
+            time.sleep(1.2)
             player_sum = sum_cards(player_cards)
             greatest_player_sum = 0
             for i in range (0, len(player_sum)):
@@ -137,7 +139,6 @@ def start_game(bet_amount):
             print()
 
             while (dealer_sum != [] and greatest_dealer_sum < 17):
-                
                 time.sleep(1.2)
                 drawn_card = draw_card(deck, deckSize)
                 deck[drawn_card - 1] -= 1
@@ -166,8 +167,10 @@ def start_game(bet_amount):
                 return bet_amount
 
         elif(decision == "hit"):
+            print(get_commentary('hit'))
             print("You chose to HIT")
             print()
+            time.sleep(1.2)
             drawn_card = draw_card(deck, deckSize)
             deck[drawn_card - 1] -= 1
             deckSize -= 1
@@ -176,6 +179,7 @@ def start_game(bet_amount):
             if (len(player_sum) == 0):
                 print_cards("Dealer", dealer_cards)
                 print_cards("Player", player_cards)
+                print(get_commentary('bust'))
                 print("You busted! RIP $" + str(bet_amount) + "!")
                 return bet_amount * -1
             if (player_sum == [21]):
