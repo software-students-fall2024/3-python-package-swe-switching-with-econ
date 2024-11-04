@@ -1,11 +1,62 @@
 import pytest
-from drunkblackjack import module
+from src.drunkblackjack import module
 import random
 
 
 class Tests:
 
     random.seed(0)
+
+    # first 4 cards should be a 7, K, 7, A
+    def test_first_four_draws(self):
+        deck = [4,4,4,4,4,4,4,4,4,4,4,4,4]
+        deckSize = 52
+        cards_drawn = []
+        for i in range (0,4):
+            drawn_card = module.draw_card(deck, deckSize)
+            deck[drawn_card-1] -= 1
+            deckSize -= 1
+            cards_drawn.append(drawn_card)
+        assert cards_drawn == [7, 13, 7, 1]
+
+    # player starts with 5, 9, if you hit twice, you will draw a 6 then 9 and bust, losing 1000
+    def test_blackjack_player_bust(self, monkeypatch):
+        monkeypatch.setattr('builtins.input', lambda _: "hit")
+        result = module.start_game(1000)
+        assert result == -1000
+
+    # player has 6, 10, dealer has 4, 9
+    # if player stands, dealers draws a 3, is forced to hit, then draws a 6
+    # which busts the dealer
+    def test_blackjack_dealer_bust(self, monkeypatch):
+        monkeypatch.setattr('builtins.input', lambda _: "stand")
+        result = module.start_game(1000)
+        assert result == 1000
+    
+    # player has 3, K, dealer has 2, J
+    # if player hits, he will receive a 5, then stands
+    # dealer has 12, is forced to hit and recieves a 10
+    # dealer busts and player will win
+    def test_blackjack_hit_then_stand(self, monkeypatch):
+        inputs = iter(["hit", "stand"])
+        monkeypatch.setattr('builtins.input', lambda _: next(inputs))
+        result = module.start_game(1000)
+        assert result == 1000
+
+    # should return an array with both as ace 1 and 11
+    def test_sum_cards_with_1_ace(self):
+        sums = module.sum_cards([1, 9])
+        assert sums == [20, 10] or sums == [10, 20]
+
+    # if blackjack, return [21]
+    def test_sum_blackjack(self):
+        sums = module.sum_cards([13, 1])
+        assert sums == [21]
+
+    # an array of 1 sum if no aces
+    def test_sum_no_aces(self):
+        sums = module.sum_cards([10, 13])
+        assert sums == [20]
 
     # Test if the function returns one of the good advices
     def test_get_good_advice(self):
