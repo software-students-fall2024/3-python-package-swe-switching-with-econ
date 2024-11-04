@@ -43,6 +43,24 @@ class Tests:
         result = module.start_game(1000)
         assert result == 1000
 
+    # if shots_taken less than 5, play responsibly!
+    # player has Q, 10
+    # dealer has 3, 6
+    # player stands, dealer draws 2 then K hitting a blackjack, rip
+    def test_blackjack_not_drunk(self, monkeypatch):
+        monkeypatch.setattr('builtins.input', lambda _: "stand")
+        result = module.start_game(1000)
+        assert result == -1000
+
+    # you have taken at least 5 shots
+    # starting to play like a bot, if sum < 17, forced to hit
+    # player will draw a 2, Q, then 10 and bust
+    def test_blackjack_drunk(self, monkeypatch):
+        module.take_shots(5)
+        monkeypatch.setattr('builtins.input', lambda _: "stand")
+        result = module.start_game(1000)
+        assert result == -1000
+
     # should return an array with both as ace 1 and 11
     def test_sum_cards_with_1_ace(self):
         sums = module.sum_cards([1, 9])
